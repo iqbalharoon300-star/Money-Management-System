@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -217,6 +218,7 @@ canvas{max-height:190px}
 <body>
 
 <!-- TOPBAR -->
+
 <div class="topbar">
   <div class="logo" id="logoText">My<em>Money</em></div>
   <div class="topbar-icons">
@@ -227,6 +229,7 @@ canvas{max-height:190px}
 </div>
 
 <!-- ═══ DASHBOARD ═══ -->
+
 <div class="page act" id="page-dashboard">
   <div class="bal-hero">
     <div class="bh-top">
@@ -270,6 +273,7 @@ canvas{max-height:190px}
 </div>
 
 <!-- ═══ ADD ═══ -->
+
 <div class="page" id="page-add">
   <div style="padding:18px">
     <div class="pgtitle" id="addTitle">Add Record</div>
@@ -349,6 +353,7 @@ canvas{max-height:190px}
 </div>
 
 <!-- ═══ RECORDS ═══ -->
+
 <div class="page" id="page-records">
   <div style="padding:18px">
     <div class="pgtitle">All Records</div>
@@ -364,6 +369,7 @@ canvas{max-height:190px}
 </div>
 
 <!-- ═══ DEBTS ═══ -->
+
 <div class="page" id="page-debts">
   <div style="padding:18px">
     <div class="pgtitle">Loans & Debts</div>
@@ -380,6 +386,7 @@ canvas{max-height:190px}
 </div>
 
 <!-- ═══ STATEMENT ═══ -->
+
 <div class="page" id="page-statement">
   <div style="padding:18px">
     <div class="pgtitle">Statement</div>
@@ -398,6 +405,7 @@ canvas{max-height:190px}
 </div>
 
 <!-- ═══ REPORTS ═══ -->
+
 <div class="page" id="page-reports">
   <div style="padding:18px">
     <div class="pgtitle">Reports</div>
@@ -413,6 +421,7 @@ canvas{max-height:190px}
 </div>
 
 <!-- ═══ ALERTS ═══ -->
+
 <div class="page" id="page-alerts">
   <div style="padding:18px">
     <div class="pgtitle">🔔 Reminders</div>
@@ -422,6 +431,7 @@ canvas{max-height:190px}
 </div>
 
 <!-- ═══ PLANNING ═══ -->
+
 <div class="page" id="page-planning">
   <div style="padding:18px">
     <div class="pgtitle">💡 Future Planning</div>
@@ -431,6 +441,7 @@ canvas{max-height:190px}
 </div>
 
 <!-- ═══ SETTINGS ═══ -->
+
 <div class="page" id="page-settings">
   <div style="padding:18px">
     <div class="pgtitle">⚙️ Settings</div>
@@ -488,6 +499,7 @@ canvas{max-height:190px}
 </div>
 
 <!-- BOTTOM NAV -->
+
 <div class="nav">
   <button class="nb act" onclick="showPage('dashboard')" id="nb-dashboard">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Home
@@ -507,6 +519,7 @@ canvas{max-height:190px}
 </div>
 
 <!-- EDIT TX MODAL -->
+
 <div class="ov" id="editTxOv" onclick="closeOv(event)">
   <div class="modal">
     <div class="mh"></div><div class="mt">✏️ Edit Record</div>
@@ -525,6 +538,7 @@ canvas{max-height:190px}
 </div>
 
 <!-- EDIT DEBT MODAL -->
+
 <div class="ov" id="editDebtOv" onclick="closeOv(event)">
   <div class="modal">
     <div class="mh"></div><div class="mt">✏️ Edit Debt</div>
@@ -1453,5 +1467,6 @@ function dlFile(n,h){var a=document.createElement('a');a.href=h;a.download=n;a.c
 
 init();
 </script>
+
 </body>
 </html>
