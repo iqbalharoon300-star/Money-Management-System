@@ -1470,7 +1470,12 @@ function getCI(type,id){var cats=type==='income'?CATS_INC:type==='remit'?CATS_RE
 function dlFile(n,h){var a=document.createElement('a');a.href=h;a.download=n;a.click();}
 
 init();
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/Money-Management-System/sw.js');
+  }
 </script>
+
 
 </body>
 </html>
