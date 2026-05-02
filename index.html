@@ -6,33 +6,24 @@
 <title>Money Manager</title>
 
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00c896">
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-<!-- 🔐 LOCK SCREEN -->
-<div id="lockScreen" class="lock-screen">
-  <h2>🔐 Unlock App</h2>
-  <button onclick="unlockApp()">Use Face ID</button>
-</div>
-
 <header>
-  <div class="logo">💳 Money Manager</div>
-  <button onclick="navigate('accounts')">🏦</button>
+  <h2>💳 Money Manager</h2>
 </header>
 
 <!-- HOME -->
 <section id="home" class="active">
 
-  <div class="hero-card">
-    <div>
-      <p>Total Balance</p>
-      <h1 id="totalBalance">AED 0</h1>
-    </div>
-    <div>
-      <p id="netWorth">Net: 0</p>
-    </div>
+  <div class="hero">
+    <h1 id="totalBalance">AED 0</h1>
+    <p id="netWorth">Net: 0</p>
   </div>
 
   <div id="accountsScroll" class="scroll"></div>
@@ -53,9 +44,10 @@
 
 <!-- ADD -->
 <section id="add">
+
   <h2>Add Transaction</h2>
 
-  <select id="type">
+  <select id="type" onchange="loadCategories(); toggleTransfer()">
     <option value="income">Income</option>
     <option value="expense">Expense</option>
     <option value="remittance">Remittance</option>
@@ -63,35 +55,14 @@
   </select>
 
   <input id="amount" type="number" placeholder="Amount">
-  <input id="category" placeholder="Category">
+  <select id="category"></select>
   <input id="date" type="date">
 
   <select id="account"></select>
-  <select id="toAccount"></select>
+  <select id="toAccount" style="display:none;"></select>
 
   <button onclick="addTransaction()">Save</button>
-</section>
 
-<!-- RECORDS -->
-<section id="records">
-  <h2>Records</h2>
-  <ul id="recordsList"></ul>
-</section>
-
-<!-- ACCOUNTS -->
-<section id="accounts">
-  <h2>Accounts</h2>
-
-  <input id="accName" placeholder="Bank Name">
-  <select id="accCurrency">
-    <option value="AED">AED</option>
-    <option value="PKR">PKR</option>
-  </select>
-  <input id="accBalance" type="number" placeholder="Opening Balance">
-
-  <button onclick="addAccount()">Add Account</button>
-
-  <div id="accountsList"></div>
 </section>
 
 <!-- REPORTS -->
@@ -101,11 +72,9 @@
   <canvas id="categoryChart"></canvas>
 </section>
 
-<!-- NAV -->
 <nav>
   <button onclick="navigate('home')">🏠</button>
   <button onclick="navigate('add')">➕</button>
-  <button onclick="navigate('records')">📋</button>
   <button onclick="navigate('reports')">📊</button>
 </nav>
 
