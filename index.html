@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Money Manager</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+<div id="app">
+
+  <!-- HEADER -->
+  <header>
+    <h1>💰 Money Manager</h1>
+    <button onclick="navigate('accounts')">🏦</button>
+  </header>
+
+  <!-- HOME -->
+  <section id="home" class="active">
+    <div class="card balance">
+      <h2>Total Balance</h2>
+      <h1 id="totalBalance">AED 0</h1>
+    </div>
+
+    <div id="accountsScroll" class="scroll"></div>
+
+    <div class="card">
+      <h3>Recent Transactions</h3>
+      <ul id="recentList"></ul>
+    </div>
+  </section>
+
+  <!-- ADD -->
+  <section id="add">
+    <h2>Add Transaction</h2>
+
+    <select id="type">
+      <option value="income">Income</option>
+      <option value="expense">Expense</option>
+      <option value="remittance">Remittance</option>
+    </select>
+
+    <input type="number" id="amount" placeholder="Amount" />
+    <input type="text" id="category" placeholder="Category" />
+    <input type="date" id="date" />
+    <select id="account"></select>
+
+    <button onclick="addTransaction()">Save</button>
+  </section>
+
+  <!-- RECORDS -->
+  <section id="records">
+    <h2>All Records</h2>
+    <ul id="recordsList"></ul>
+  </section>
+
+  <!-- ACCOUNTS -->
+  <section id="accounts">
+    <h2>Accounts</h2>
+
+    <h3>Add New Account</h3>
+    <input type="text" id="accName" placeholder="Bank Name"/>
+    
+    <select id="accCurrency">
+      <option value="AED">AED 🇦🇪</option>
+      <option value="PKR">PKR 🇵🇰</option>
+    </select>
+
+    <input type="number" id="accBalance" placeholder="Opening Balance"/>
+    <button onclick="addAccount()">Add Account</button>
+
+    <div id="accountsList"></div>
+  </section>
+
+</div>
+
+<!-- NAV -->
+<nav>
+  <button onclick="navigate('home')">🏠</button>
+  <button onclick="navigate('add')">➕</button>
+  <button onclick="navigate('records')">📋</button>
+</nav>
+
+<script src="app.js"></script>
+
+</body>
+</html>
