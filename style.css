@@ -1,64 +1,106 @@
+/* BASE */
 body {
   margin: 0;
   font-family: -apple-system, sans-serif;
-  background: #0f172a;
+  background: #020617;
   color: white;
 }
 
+/* HEADER */
 header {
   display: flex;
   justify-content: space-between;
-  padding: 15px;
-  background: #020617;
+  align-items: center;
+  padding: 16px;
+  font-size: 20px;
+  font-weight: bold;
 }
 
+.logo {
+  font-size: 22px;
+}
+
+.icon-btn {
+  background: #0f172a;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  color: white;
+}
+
+/* SECTIONS */
 section {
   display: none;
   padding: 15px;
+  padding-bottom: 90px;
 }
 
 section.active {
   display: block;
 }
 
+/* CARDS */
 .card {
-  background: rgba(255,255,255,0.05);
+  background: #0f172a;
   padding: 15px;
   border-radius: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
+/* BALANCE CARD */
 .balance {
   background: linear-gradient(135deg, #00c896, #2563eb);
 }
 
+.balance h1 {
+  font-size: 32px;
+  margin-top: 10px;
+}
+
+/* ACCOUNT SCROLL */
 .scroll {
   display: flex;
+  gap: 10px;
   overflow-x: auto;
+  margin-bottom: 10px;
 }
 
 .scroll div {
-  min-width: 150px;
-  margin-right: 10px;
-  padding: 10px;
+  min-width: 140px;
   background: #1e293b;
-  border-radius: 10px;
+  padding: 12px;
+  border-radius: 12px;
 }
 
-input, select, button {
+/* INPUTS */
+input, select {
   width: 100%;
-  padding: 10px;
-  margin: 5px 0;
+  padding: 12px;
+  margin: 6px 0;
   border-radius: 10px;
   border: none;
+  background: #1e293b;
+  color: white;
 }
 
+/* BUTTON */
 button {
-  background: #00c896;
-  color: black;
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #00c896, #22c55e);
   font-weight: bold;
+  color: black;
 }
 
+/* LIST */
+ul {
+  padding-left: 18px;
+}
+
+/* NAVBAR */
 nav {
   position: fixed;
   bottom: 0;
@@ -66,5 +108,12 @@ nav {
   background: #020617;
   display: flex;
   justify-content: space-around;
-  padding: 10px;
+  padding: 10px 0;
+  border-top: 1px solid #1e293b;
+}
+
+nav button {
+  background: none;
+  color: white;
+  font-size: 20px;
 }
