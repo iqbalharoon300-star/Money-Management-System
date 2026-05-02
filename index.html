@@ -14,15 +14,16 @@
 
   <!-- HEADER -->
   <header>
-    <h1>💰 Money Manager</h1>
-    <button onclick="navigate('accounts')">🏦</button>
+    <div class="logo">💰 Money Manager</div>
+    <button class="icon-btn" onclick="navigate('accounts')">🏦</button>
   </header>
 
   <!-- HOME -->
   <section id="home" class="active">
+
     <div class="card balance">
       <h2>Total Balance</h2>
-      <h1 id="totalBalance">AED 0</h1>
+      <h1 id="totalBalance">AED 0.00</h1>
     </div>
 
     <div id="accountsScroll" class="scroll"></div>
@@ -31,6 +32,7 @@
       <h3>Recent Transactions</h3>
       <ul id="recentList"></ul>
     </div>
+
   </section>
 
   <!-- ADD -->
@@ -61,23 +63,28 @@
   <section id="accounts">
     <h2>Accounts</h2>
 
-    <h3>Add New Account</h3>
-    <input type="text" id="accName" placeholder="Bank Name"/>
-    
-    <select id="accCurrency">
-      <option value="AED">AED 🇦🇪</option>
-      <option value="PKR">PKR 🇵🇰</option>
-    </select>
+    <div class="card">
+      <h3>Add New Account</h3>
 
-    <input type="number" id="accBalance" placeholder="Opening Balance"/>
-    <button onclick="addAccount()">Add Account</button>
+      <input type="text" id="accName" placeholder="Bank Name"/>
+
+      <select id="accCurrency">
+        <option value="AED">AED 🇦🇪</option>
+        <option value="PKR">PKR 🇵🇰</option>
+      </select>
+
+      <input type="number" id="accBalance" placeholder="Opening Balance"/>
+
+      <button onclick="addAccount()">Add Account</button>
+    </div>
 
     <div id="accountsList"></div>
+
   </section>
 
 </div>
 
-<!-- NAV -->
+<!-- NAVBAR -->
 <nav>
   <button onclick="navigate('home')">🏠</button>
   <button onclick="navigate('add')">➕</button>
