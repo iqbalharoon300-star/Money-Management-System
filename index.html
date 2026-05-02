@@ -6,9 +6,6 @@
   <title>Money Manager</title>
 
   <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
-
-  <meta name="theme-color" content="#0f172a"/>
 </head>
 
 <body>
@@ -28,11 +25,6 @@
       <h1 id="totalBalance">AED 0</h1>
     </div>
 
-    <div class="card">
-      <h3>This Month</h3>
-      <p id="monthlySummary">Income: 0 | Expense: 0</p>
-    </div>
-
     <div id="accountsScroll" class="scroll"></div>
 
     <div class="card">
@@ -49,15 +41,11 @@
       <option value="income">Income</option>
       <option value="expense">Expense</option>
       <option value="remittance">Remittance</option>
-      <option value="transfer">Transfer</option>
     </select>
 
     <input type="number" id="amount" placeholder="Amount" />
-
     <input type="text" id="category" placeholder="Category" />
-
     <input type="date" id="date" />
-
     <select id="account"></select>
 
     <button onclick="addTransaction()">Save</button>
@@ -66,38 +54,34 @@
   <!-- RECORDS -->
   <section id="records">
     <h2>All Records</h2>
-    <input type="text" placeholder="Search..." oninput="searchRecords(this.value)">
     <ul id="recordsList"></ul>
-  </section>
-
-  <!-- REPORTS -->
-  <section id="reports">
-    <h2>Reports</h2>
-    <canvas id="chart"></canvas>
-  </section>
-
-  <!-- BUDGET -->
-  <section id="budget">
-    <h2>Budget Settings</h2>
-    <input type="number" id="rate" placeholder="AED → PKR Rate"/>
-    <button onclick="saveRate()">Save Rate</button>
   </section>
 
   <!-- ACCOUNTS -->
   <section id="accounts">
     <h2>Accounts</h2>
+
+    <h3>Add New Account</h3>
+    <input type="text" id="accName" placeholder="Bank Name"/>
+    
+    <select id="accCurrency">
+      <option value="AED">AED 🇦🇪</option>
+      <option value="PKR">PKR 🇵🇰</option>
+    </select>
+
+    <input type="number" id="accBalance" placeholder="Opening Balance"/>
+    <button onclick="addAccount()">Add Account</button>
+
     <div id="accountsList"></div>
   </section>
 
 </div>
 
-<!-- NAVBAR -->
+<!-- NAV -->
 <nav>
   <button onclick="navigate('home')">🏠</button>
   <button onclick="navigate('add')">➕</button>
-  <button onclick="navigate('reports')">📊</button>
   <button onclick="navigate('records')">📋</button>
-  <button onclick="navigate('budget')">⏱</button>
 </nav>
 
 <script src="app.js"></script>
