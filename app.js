@@ -1,41 +1,32 @@
 let DB = JSON.parse(localStorage.getItem("moneyApp")) || {
-  settings: { exchangeRate: 76.5 },
-  accounts: [],
-  transactions: [],
-  reminders: []
+  settings:{exchangeRate:76.5},
+  accounts:[],
+  transactions:[]
 };
 
-function saveDB() {
-  localStorage.setItem("moneyApp", JSON.stringify(DB));
+function saveDB(){
+  localStorage.setItem("moneyApp",JSON.stringify(DB));
 }
 
-// 🔐 LOCK
-async function unlockApp() {
-  document.getElementById("lockScreen").style.display = "none";
+function navigate(id){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
-// NAV
-function navigate(id) {
-  document.querySelectorAll("section").forEach(s => s.style.display="none");
-  document.getElementById(id).style.display="block";
-}
-
-// ACCOUNT
-function addAccount() {
+// ACCOUNTS
+function addAccount(){
   DB.accounts.push({
-    id: Date.now(),
-    name: accName.value,
-    currency: accCurrency.value,
-    openingBalance: parseFloat(accBalance.value) || 0
+    id:Date.now(),
+    name:accName.value,
+    currency:accCurrency.value,
+    openingBalance:parseFloat(accBalance.value)||0
   });
-  saveDB();
-  render();
+  saveDB(); render();
 }
 
-// BALANCE
-function getAccountBalance(id) {
-  let acc = DB.accounts.find(a=>a.id==id);
-  let bal = acc?.openingBalance || 0;
+function getAccountBalance(id){
+  let acc=DB.accounts.find(a=>a.id==id);
+  let bal=acc?.openingBalance||0;
 
   DB.transactions.forEach(t=>{
     if(t.type==="transfer"){
@@ -51,96 +42,143 @@ function getAccountBalance(id) {
   return bal;
 }
 
-// TRANSACTION
-function addTransaction() {
-  let type = document.getElementById("type").value;
-  let amount = parseFloat(amount.value);
-  let from = account.value;
-  let to = toAccount.value;
+// CATEGORY
+function loadCategories(){
+  const type=document.getElementById("type").value;
+  const select=document.getElementById("category");
+
+  const data={
+    income:["Salary","Bonus"],
+    expense:["Food","Transport","Rent","Shopping"],
+    remittance:["Family","Pakistan"],
+    transfer:["Transfer"]
+  };
+
+  select.innerHTML="";
+  data[type].forEach(c=>{
+    let o=document.createElement("option");
+    o.value=c; o.text=c;
+    select.appendChild(o);
+  });
+}
+
+// ACCOUNT DROPDOWN
+function loadAccountDropdown(){
+  const a=document.getElementById("account");
+  const b=document.getElementById("toAccount");
+
+  a.innerHTML=""; b.innerHTML="";
+
+  DB.accounts.forEach(acc=>{
+    let o=document.createElement("option");
+    o.value=acc.id;
+    o.text=acc.name;
+    a.appendChild(o);
+    b.appendChild(o.cloneNode(true));
+  });
+}
+
+// TRANSFER TOGGLE
+function toggleTransfer(){
+  let t=document.getElementById("type").value;
+  document.getElementById("toAccount").style.display =
+    t==="transfer"?"block":"none";
+}
+
+// ADD TX
+function addTransaction(){
+  let type=document.getElementById("type").value;
+  let amount=parseFloat(amount.value);
+  let from=account.value;
+  let to=toAccount.value;
 
   if(type==="transfer"){
-    let pkr = amount * DB.settings.exchangeRate;
     DB.transactions.push({
-      id: Date.now(),
+      id:Date.now(),
       type:"transfer",
-      from, to,
-      amountAED: amount,
-      amountPKR: pkr,
-      date: new Date()
+      from,to,
+      amountAED:amount,
+      amountPKR:amount*DB.settings.exchangeRate,
+      date:new Date()
     });
   } else {
     DB.transactions.push({
-      id: Date.now(),
+      id:Date.now(),
       type,
       amount,
-      category: category.value,
-      accountId: from,
-      date: date.value
+      category:category.value,
+      accountId:from,
+      date:date.value
     });
   }
 
-  saveDB();
-  render();
+  saveDB(); render();
+}
+
+// INSIGHTS
+function insights(){
+  let expense=0, food=0;
+
+  DB.transactions.forEach(t=>{
+    if(t.type==="expense"){
+      expense+=t.amount;
+      if(t.category==="Food") food+=t.amount;
+    }
+  });
+
+  insightBox.innerText =
+    food>expense*0.4
+    ? "🍔 Too much food spending"
+    : "✅ Good balance";
+}
+
+// CHARTS
+let chart;
+
+function renderCharts(){
+  if(chart) chart.destroy();
+
+  let data=Array(12).fill(0);
+
+  DB.transactions.forEach(t=>{
+    let m=new Date(t.date||Date.now()).getMonth();
+    if(t.amount) data[m]+=t.amount;
+  });
+
+  chart=new Chart(monthlyChart,{
+    type:"line",
+    data:{labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+    datasets:[{data:data}]}
+  });
 }
 
 // RENDER
-function render() {
+function render(){
+  loadAccountDropdown();
+  loadCategories();
 
-  // accounts
-  let c = document.getElementById("accountsScroll");
-  c.innerHTML="";
-  DB.accounts.forEach(a=>{
-    let d=document.createElement("div");
-    d.innerHTML=`<h4>${a.name}</h4><p>${getAccountBalance(a.id)}</p>`;
-    c.appendChild(d);
-  });
+  // balance
+  let total=0;
+  DB.accounts.forEach(a=> total+=getAccountBalance(a.id));
+  totalBalance.innerText="AED "+total;
 
   // recent
-  let list = document.getElementById("recentList");
-  list.innerHTML="";
+  recentList.innerHTML="";
   DB.transactions.slice(-5).reverse().forEach(t=>{
     let li=document.createElement("li");
     li.innerText = t.type==="transfer"
       ? `AED ${t.amountAED} → PKR ${t.amountPKR}`
-      : `${t.type} ${t.amount}`;
-    list.appendChild(li);
+      : `${t.category} ${t.amount}`;
+    recentList.appendChild(li);
   });
 
-  // stats
-  let income=0, expense=0;
-  DB.transactions.forEach(t=>{
-    if(t.type==="income") income+=t.amount;
-    if(t.type==="expense") expense+=t.amount;
-  });
-  monthlyStats.innerText=`Income ${income} | Expense ${expense}`;
-
-  // insights
-  insightBox.innerText = expense > income
-    ? "⚠️ Spending more than income"
-    : "✅ Good financial balance";
-
-  // net worth
-  let total=0;
-  DB.accounts.forEach(a=> total+=getAccountBalance(a.id));
-  netWorth.innerText="Net: "+total;
-
-  // charts
+  insights();
   renderCharts();
 }
 
-// CHARTS
-function renderCharts(){
-  let months=Array(12).fill(0);
-  DB.transactions.forEach(t=>{
-    let m=new Date(t.date).getMonth();
-    months[m]+=t.amount||0;
-  });
-
-  new Chart(monthlyChart,{
-    type:"line",
-    data:{labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
-    datasets:[{data:months}]}
-  });
+// SERVICE WORKER
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("sw.js");
 }
 
 render();
