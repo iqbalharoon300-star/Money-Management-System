@@ -1,175 +1,66 @@
-/* ===== BASE ===== */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(180deg, #020617, #020617 40%, #020617);
+  font-family: -apple-system;
+  background: #020617;
   color: white;
 }
 
-/* ===== HEADER ===== */
 header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 16px;
+  padding: 15px;
 }
 
-.logo {
-  font-size: 22px;
-  font-weight: bold;
+.hero-card {
+  background: linear-gradient(135deg, #111827, #1e3a8a);
+  padding: 20px;
+  border-radius: 20px;
+  margin: 15px;
 }
 
-.icon-btn {
-  background: rgba(255,255,255,0.05);
-  border: none;
-  padding: 10px;
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-  color: white;
-}
-
-/* ===== SECTION ===== */
-section {
-  display: none;
-  padding: 16px;
-  padding-bottom: 100px;
-}
-
-section.active {
-  display: block;
-  animation: fadeIn 0.3s ease;
-}
-
-/* ===== ANIMATION ===== */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px);}
-  to { opacity: 1; transform: translateY(0);}
-}
-
-/* ===== CARDS ===== */
 .card {
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(12px);
-  border-radius: 18px;
-  padding: 16px;
-  margin-bottom: 14px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  background: #0f172a;
+  padding: 15px;
+  border-radius: 15px;
+  margin: 10px;
 }
 
-/* ===== BALANCE CARD ===== */
-.balance {
-  background: linear-gradient(135deg, #00c896, #2563eb);
-  box-shadow: 0 10px 30px rgba(0, 200, 150, 0.4);
+.insight {
+  background: linear-gradient(135deg, #00c896, #22c55e);
+  color: black;
 }
 
-.balance h2 {
-  opacity: 0.9;
-}
-
-.balance h1 {
-  font-size: 34px;
-  margin-top: 10px;
-}
-
-/* ===== ACCOUNT CARDS (LIKE BANK CARDS) ===== */
 .scroll {
   display: flex;
-  gap: 12px;
   overflow-x: auto;
-  padding-bottom: 5px;
-}
-
-.scroll::-webkit-scrollbar {
-  display: none;
+  gap: 10px;
+  padding: 10px;
 }
 
 .scroll div {
-  min-width: 180px;
-  border-radius: 18px;
-  padding: 16px;
-  background: linear-gradient(135deg, #1e293b, #334155);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-  transition: transform 0.2s ease;
+  min-width: 150px;
+  background: #1e293b;
+  padding: 10px;
+  border-radius: 10px;
 }
 
-.scroll div:hover {
-  transform: scale(1.05);
-}
-
-.scroll h4 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.scroll p {
-  font-size: 18px;
-  margin-top: 8px;
-  font-weight: bold;
-}
-
-/* ===== INPUTS ===== */
-input, select {
-  width: 100%;
-  padding: 14px;
-  margin: 8px 0;
-  border-radius: 14px;
+input, select, button {
+  width: 90%;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 10px;
   border: none;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(8px);
-  color: white;
-  font-size: 14px;
 }
 
-/* ===== BUTTON ===== */
 button {
-  width: 100%;
-  padding: 14px;
-  margin-top: 10px;
-  border-radius: 14px;
-  border: none;
-  background: linear-gradient(135deg, #00c896, #22c55e);
-  font-weight: bold;
-  color: black;
-  font-size: 16px;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  background: #00c896;
 }
 
-button:active {
-  transform: scale(0.97);
-  box-shadow: 0 5px 15px rgba(0,200,150,0.4);
-}
-
-/* ===== LIST ===== */
-ul {
-  padding-left: 18px;
-}
-
-li {
-  margin-bottom: 6px;
-  opacity: 0.9;
-}
-
-/* ===== NAVBAR ===== */
 nav {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background: rgba(2,6,23,0.9);
-  backdrop-filter: blur(12px);
   display: flex;
   justify-content: space-around;
-  padding: 12px 0;
-  border-top: 1px solid rgba(255,255,255,0.05);
-}
-
-nav button {
-  background: none;
-  color: white;
-  font-size: 20px;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-}
-
-nav button:hover {
-  opacity: 1;
+  background: black;
 }
