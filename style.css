@@ -5,12 +5,27 @@ body {
   color: white;
 }
 
+/* LOCK */
+.lock-screen {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #020617;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* HEADER */
 header {
   display: flex;
   justify-content: space-between;
   padding: 15px;
 }
 
+/* HERO */
 .hero-card {
   background: linear-gradient(135deg, #111827, #1e3a8a);
   padding: 20px;
@@ -18,6 +33,7 @@ header {
   margin: 15px;
 }
 
+/* CARDS */
 .card {
   background: #0f172a;
   padding: 15px;
@@ -30,6 +46,7 @@ header {
   color: black;
 }
 
+/* SCROLL */
 .scroll {
   display: flex;
   overflow-x: auto;
@@ -44,6 +61,7 @@ header {
   border-radius: 10px;
 }
 
+/* INPUTS */
 input, select, button {
   width: 90%;
   margin: 5px;
@@ -52,10 +70,12 @@ input, select, button {
   border: none;
 }
 
+/* BUTTON */
 button {
   background: #00c896;
 }
 
+/* NAV */
 nav {
   position: fixed;
   bottom: 0;
