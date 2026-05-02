@@ -1,170 +1,136 @@
 let DB = JSON.parse(localStorage.getItem("moneyApp")) || {
-  settings: {
-    exchangeRate: 76.5
-  },
-  accounts: [
-    {
-      id: "acc1",
-      name: "Cash Wallet",
-      currency: "AED",
-      openingBalance: 0
-    }
-  ],
-  transactions: []
+  settings: { exchangeRate: 76.5 },
+  accounts: [],
+  transactions: [],
+  reminders: [],
+  loans: []
 };
 
-// NAVIGATION
-function navigate(id) {
-  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
-// SAVE
 function saveDB() {
   localStorage.setItem("moneyApp", JSON.stringify(DB));
 }
 
-// ADD ACCOUNT
+function navigate(id) {
+  document.querySelectorAll("section").forEach(s => s.style.display="none");
+  document.getElementById(id).style.display="block";
+}
+
 function addAccount() {
-  const acc = {
-    id: "acc" + Date.now(),
-    name: document.getElementById("accName").value,
-    currency: document.getElementById("accCurrency").value,
-    openingBalance: parseFloat(document.getElementById("accBalance").value) || 0
-  };
-
-  DB.accounts.push(acc);
-  saveDB();
-  render();
-}
-
-// DELETE ACCOUNT
-function deleteAccount(id) {
-  DB.accounts = DB.accounts.filter(a => a.id !== id);
-  DB.transactions = DB.transactions.filter(t => t.accountId !== id);
-  saveDB();
-  render();
-}
-
-// ACCOUNT BALANCE
-function getAccountBalance(accountId) {
-  const account = DB.accounts.find(a => a.id === accountId);
-  let balance = account.openingBalance;
-
-  DB.transactions.forEach(t => {
-    if (t.accountId === accountId) {
-      if (t.type === "income") balance += t.amount;
-      if (t.type === "expense") balance -= t.amount;
-      if (t.type === "remittance") balance -= t.amount;
-    }
-  });
-
-  return balance;
-}
-
-// ADD TRANSACTION
-function addTransaction() {
-  const t = {
+  DB.accounts.push({
     id: Date.now(),
-    type: document.getElementById("type").value,
-    amount: parseFloat(document.getElementById("amount").value),
-    category: document.getElementById("category").value,
-    date: document.getElementById("date").value,
-    accountId: document.getElementById("account").value
-  };
-
-  DB.transactions.push(t);
+    name: accName.value,
+    currency: accCurrency.value,
+    openingBalance: parseFloat(accBalance.value)
+  });
   saveDB();
   render();
 }
 
-// TOTAL BALANCE
-function getTotalBalance() {
-  let total = 0;
+function getAccountBalance(id) {
+  let acc = DB.accounts.find(a=>a.id==id);
+  let bal = acc.openingBalance || 0;
 
-  DB.accounts.forEach(acc => {
-    if (acc.currency === "AED") {
-      total += getAccountBalance(acc.id);
+  DB.transactions.forEach(t=>{
+    if(t.type=="transfer"){
+      if(t.from==id) bal-=t.amountAED;
+      if(t.to==id) bal+=t.amountPKR;
+    }
+    if(t.accountId==id){
+      if(t.type=="income") bal+=t.amount;
+      if(t.type=="expense") bal-=t.amount;
     }
   });
 
-  return total;
+  return bal;
 }
 
-// LOAD ACCOUNT DROPDOWN
-function loadAccountDropdown() {
-  const select = document.getElementById("account");
-  select.innerHTML = "";
+function addTransaction() {
+  let type = type.value;
+  let amount = parseFloat(document.getElementById("amount").value);
+  let from = account.value;
+  let to = toAccount.value;
 
-  DB.accounts.forEach(acc => {
-    let option = document.createElement("option");
-    option.value = acc.id;
-    option.text = acc.name + " (" + acc.currency + ")";
-    select.appendChild(option);
+  if(type=="transfer"){
+    let pkr = amount * DB.settings.exchangeRate;
+    DB.transactions.push({
+      id: Date.now(),
+      type:"transfer",
+      from,
+      to,
+      amountAED: amount,
+      amountPKR: pkr
+    });
+  } else {
+    DB.transactions.push({
+      id: Date.now(),
+      type,
+      amount,
+      category: category.value,
+      accountId: from,
+      date: date.value
+    });
+  }
+
+  saveDB();
+  render();
+}
+
+function renderAccounts() {
+  let c = document.getElementById("accountsScroll");
+  c.innerHTML="";
+  DB.accounts.forEach(a=>{
+    let d=document.createElement("div");
+    d.innerHTML=`<h4>${a.name}</h4><p>${getAccountBalance(a.id)}</p>`;
+    c.appendChild(d);
   });
 }
 
-// RENDER ACCOUNT CARDS
-function renderAccountsScroll() {
-  const container = document.getElementById("accountsScroll");
-  container.innerHTML = "";
-
-  DB.accounts.forEach(acc => {
-    const balance = getAccountBalance(acc.id);
-
-    let div = document.createElement("div");
-    div.innerHTML = `
-      <h4>${acc.name}</h4>
-      <p>${acc.currency} ${balance.toFixed(2)}</p>
-    `;
-
-    container.appendChild(div);
-  });
-}
-
-// RENDER ACCOUNTS PAGE
-function renderAccountsPage() {
-  const container = document.getElementById("accountsList");
-  container.innerHTML = "";
-
-  DB.accounts.forEach(acc => {
-    const balance = getAccountBalance(acc.id);
-
-    let div = document.createElement("div");
-    div.className = "card";
-
-    div.innerHTML = `
-      <h3>${acc.name}</h3>
-      <p>${acc.currency} ${balance.toFixed(2)}</p>
-      <button onclick="deleteAccount('${acc.id}')">Delete</button>
-    `;
-
-    container.appendChild(div);
-  });
-}
-
-// RENDER RECENT
 function renderRecent() {
-  let list = document.getElementById("recentList");
-  list.innerHTML = "";
-
-  DB.transactions.slice(-5).reverse().forEach(t => {
-    let li = document.createElement("li");
-    li.innerText = `${t.type} - ${t.amount}`;
+  let list = recentList;
+  list.innerHTML="";
+  DB.transactions.slice(-5).reverse().forEach(t=>{
+    let li=document.createElement("li");
+    li.innerText = t.type=="transfer"
+      ? `AED ${t.amountAED} → PKR ${t.amountPKR}`
+      : `${t.type} ${t.amount}`;
     list.appendChild(li);
   });
 }
 
-// MAIN RENDER
-function render() {
-  document.getElementById("totalBalance").innerText =
-    "AED " + getTotalBalance().toFixed(2);
-
-  loadAccountDropdown();
-  renderAccountsScroll();
-  renderAccountsPage();
-  renderRecent();
+function renderStats(){
+  let income=0, expense=0;
+  DB.transactions.forEach(t=>{
+    if(t.type=="income") income+=t.amount;
+    if(t.type=="expense") expense+=t.amount;
+  });
+  monthlyStats.innerText=`Income ${income} | Expense ${expense}`;
 }
 
-// INIT
+function insights(){
+  let total=0, food=0;
+  DB.transactions.forEach(t=>{
+    if(t.type=="expense"){
+      total+=t.amount;
+      if(t.category=="food") food+=t.amount;
+    }
+  });
+  insightBox.innerText = food>total*0.4
+    ? "🍔 High food spending"
+    : "👍 Spending looks good";
+}
+
+function netWorth(){
+  let total=0;
+  DB.accounts.forEach(a=> total+=getAccountBalance(a.id));
+  netWorth.innerText="Net: "+total;
+}
+
+function render(){
+  renderAccounts();
+  renderRecent();
+  renderStats();
+  insights();
+  netWorth();
+}
+
 render();
