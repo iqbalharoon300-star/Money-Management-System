@@ -2,63 +2,71 @@ let DB = JSON.parse(localStorage.getItem("moneyApp")) || {
   settings: { exchangeRate: 76.5 },
   accounts: [],
   transactions: [],
-  reminders: [],
-  loans: []
+  reminders: []
 };
 
 function saveDB() {
   localStorage.setItem("moneyApp", JSON.stringify(DB));
 }
 
+// 🔐 LOCK
+async function unlockApp() {
+  document.getElementById("lockScreen").style.display = "none";
+}
+
+// NAV
 function navigate(id) {
   document.querySelectorAll("section").forEach(s => s.style.display="none");
   document.getElementById(id).style.display="block";
 }
 
+// ACCOUNT
 function addAccount() {
   DB.accounts.push({
     id: Date.now(),
     name: accName.value,
     currency: accCurrency.value,
-    openingBalance: parseFloat(accBalance.value)
+    openingBalance: parseFloat(accBalance.value) || 0
   });
   saveDB();
   render();
 }
 
+// BALANCE
 function getAccountBalance(id) {
   let acc = DB.accounts.find(a=>a.id==id);
-  let bal = acc.openingBalance || 0;
+  let bal = acc?.openingBalance || 0;
 
   DB.transactions.forEach(t=>{
-    if(t.type=="transfer"){
+    if(t.type==="transfer"){
       if(t.from==id) bal-=t.amountAED;
       if(t.to==id) bal+=t.amountPKR;
     }
     if(t.accountId==id){
-      if(t.type=="income") bal+=t.amount;
-      if(t.type=="expense") bal-=t.amount;
+      if(t.type==="income") bal+=t.amount;
+      if(t.type==="expense") bal-=t.amount;
     }
   });
 
   return bal;
 }
 
+// TRANSACTION
 function addTransaction() {
-  let type = type.value;
-  let amount = parseFloat(document.getElementById("amount").value);
+  let type = document.getElementById("type").value;
+  let amount = parseFloat(amount.value);
   let from = account.value;
   let to = toAccount.value;
 
-  if(type=="transfer"){
+  if(type==="transfer"){
     let pkr = amount * DB.settings.exchangeRate;
     DB.transactions.push({
       id: Date.now(),
       type:"transfer",
-      from,
-      to,
+      from, to,
       amountAED: amount,
-      amountPKR: pkr
+      amountPKR: pkr,
+      date: new Date()
     });
   } else {
     DB.transactions.push({
@@ -75,7 +83,10 @@ function addTransaction() {
   render();
 }
 
-function renderAccounts() {
+// RENDER
+function render() {
+
+  // accounts
   let c = document.getElementById("accountsScroll");
   c.innerHTML="";
   DB.accounts.forEach(a=>{
@@ -83,54 +94,53 @@ function renderAccounts() {
     d.innerHTML=`<h4>${a.name}</h4><p>${getAccountBalance(a.id)}</p>`;
     c.appendChild(d);
   });
-}
 
-function renderRecent() {
-  let list = recentList;
+  // recent
+  let list = document.getElementById("recentList");
   list.innerHTML="";
   DB.transactions.slice(-5).reverse().forEach(t=>{
     let li=document.createElement("li");
-    li.innerText = t.type=="transfer"
+    li.innerText = t.type==="transfer"
       ? `AED ${t.amountAED} → PKR ${t.amountPKR}`
       : `${t.type} ${t.amount}`;
     list.appendChild(li);
   });
-}
 
-function renderStats(){
+  // stats
   let income=0, expense=0;
   DB.transactions.forEach(t=>{
-    if(t.type=="income") income+=t.amount;
-    if(t.type=="expense") expense+=t.amount;
+    if(t.type==="income") income+=t.amount;
+    if(t.type==="expense") expense+=t.amount;
   });
   monthlyStats.innerText=`Income ${income} | Expense ${expense}`;
-}
 
-function insights(){
-  let total=0, food=0;
-  DB.transactions.forEach(t=>{
-    if(t.type=="expense"){
-      total+=t.amount;
-      if(t.category=="food") food+=t.amount;
-    }
-  });
-  insightBox.innerText = food>total*0.4
-    ? "🍔 High food spending"
-    : "👍 Spending looks good";
-}
+  // insights
+  insightBox.innerText = expense > income
+    ? "⚠️ Spending more than income"
+    : "✅ Good financial balance";
 
-function netWorth(){
+  // net worth
   let total=0;
   DB.accounts.forEach(a=> total+=getAccountBalance(a.id));
   netWorth.innerText="Net: "+total;
+
+  // charts
+  renderCharts();
 }
 
-function render(){
-  renderAccounts();
-  renderRecent();
-  renderStats();
-  insights();
-  netWorth();
+// CHARTS
+function renderCharts(){
+  let months=Array(12).fill(0);
+  DB.transactions.forEach(t=>{
+    let m=new Date(t.date).getMonth();
+    months[m]+=t.amount||0;
+  });
+
+  new Chart(monthlyChart,{
+    type:"line",
+    data:{labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+    datasets:[{data:months}]}
+  });
 }
 
 render();
