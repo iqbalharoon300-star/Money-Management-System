@@ -1,0 +1,70 @@
+body {
+  margin: 0;
+  font-family: -apple-system, sans-serif;
+  background: #0f172a;
+  color: white;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  background: #020617;
+}
+
+section {
+  display: none;
+  padding: 15px;
+}
+
+section.active {
+  display: block;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+}
+
+.balance {
+  background: linear-gradient(135deg, #00c896, #2563eb);
+}
+
+.scroll {
+  display: flex;
+  overflow-x: auto;
+}
+
+.scroll div {
+  min-width: 150px;
+  margin-right: 10px;
+  padding: 10px;
+  background: #1e293b;
+  border-radius: 10px;
+}
+
+input, select, button {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  background: #00c896;
+  color: black;
+  font-weight: bold;
+}
+
+nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #020617;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+}
