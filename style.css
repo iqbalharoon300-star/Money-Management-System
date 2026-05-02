@@ -1,86 +1,73 @@
 body {
-  margin: 0;
-  font-family: -apple-system;
-  background: #020617;
-  color: white;
+  margin:0;
+  font-family:-apple-system;
+  background:#020617;
+  color:white;
 }
 
-/* LOCK */
-.lock-screen {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: #020617;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-/* HEADER */
 header {
-  display: flex;
-  justify-content: space-between;
-  padding: 15px;
+  padding:15px;
 }
 
-/* HERO */
-.hero-card {
-  background: linear-gradient(135deg, #111827, #1e3a8a);
-  padding: 20px;
-  border-radius: 20px;
-  margin: 15px;
+section {
+  display:none;
+  padding:15px;
+  padding-bottom:90px;
+  min-height:100vh;
 }
 
-/* CARDS */
+section.active {
+  display:block;
+}
+
+.hero {
+  background:linear-gradient(135deg,#111827,#1e3a8a);
+  padding:20px;
+  border-radius:20px;
+}
+
 .card {
-  background: #0f172a;
-  padding: 15px;
-  border-radius: 15px;
-  margin: 10px;
+  background:#0f172a;
+  padding:15px;
+  border-radius:15px;
+  margin-top:10px;
 }
 
 .insight {
-  background: linear-gradient(135deg, #00c896, #22c55e);
-  color: black;
+  background:linear-gradient(135deg,#00c896,#22c55e);
+  color:black;
 }
 
-/* SCROLL */
 .scroll {
-  display: flex;
-  overflow-x: auto;
-  gap: 10px;
-  padding: 10px;
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
 }
 
 .scroll div {
-  min-width: 150px;
-  background: #1e293b;
-  padding: 10px;
-  border-radius: 10px;
+  min-width:120px;
+  background:#1e293b;
+  padding:10px;
+  border-radius:10px;
 }
 
-/* INPUTS */
-input, select, button {
-  width: 90%;
-  margin: 5px;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
+input,select,button {
+  width:100%;
+  padding:12px;
+  margin-top:8px;
+  border-radius:10px;
+  border:none;
 }
 
-/* BUTTON */
 button {
-  background: #00c896;
+  background:#00c896;
 }
 
-/* NAV */
 nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  background: black;
+  position:fixed;
+  bottom:0;
+  width:100%;
+  display:flex;
+  justify-content:space-around;
+  background:black;
 }
